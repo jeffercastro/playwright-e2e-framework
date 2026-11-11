@@ -1,0 +1,23 @@
+{
+  "name": "playwright-e2e-framework",
+  "version": "1.0.0",
+  "description": "Production-grade UI E2E test automation framework with TypeScript, Playwright, Page Object Model, cross-browser execution and GitHub Actions CI/CD",
+  "main": "index.js",
+  "scripts": {
+    "test": "playwright test",
+    "test:headed": "playwright test --headed",
+    "test:ui": "playwright test --ui",
+    "test:chromium": "playwright test --project=chromium",
+    "test:firefox": "playwright test --project=firefox",
+    "test:webkit": "playwright test --project=webkit",
+    "test:report": "playwright show-report"
+  },
+  "keywords": ["playwright", "e2e", "typescript", "pom", "page-object-model", "sdet", "ci-cd"],
+  "author": "Jeffer Castro",
+  "license": "MIT",
+  "devDependencies": {
+    "@playwright/test": "^1.49.0",
+    "@types/node": "^22.0.0",
+    "typescript": "^5.6.3"
+  }
+}
