@@ -8,6 +8,9 @@ export default defineConfig({
   workers: process.env.CI ? 2 : undefined,
   timeout: 30000,
 
+  // Uniform snapshot path across platforms (Windows & Linux CI)
+  snapshotPathTemplate: '{testDir}/visual/__snapshots__/{arg}-{projectName}{ext}',
+
   reporter: [
     ['list'],
     ['html', { outputFolder: 'playwright-report', open: 'never' }],

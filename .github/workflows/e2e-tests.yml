@@ -20,7 +20,7 @@ jobs:
   test:
     name: E2E & Visual Tests (${{ matrix.project }})
     runs-on: ubuntu-latest
-    timeout-minutes: 20
+    timeout-minutes: 10
 
     strategy:
       fail-fast: false

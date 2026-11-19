@@ -11,7 +11,6 @@ export type SortOption =
  * InventoryPage: Encapsulates all interactions with the product catalog.
  */
 export class InventoryPage extends BasePage {
-  // — Locators —
   readonly pageTitle: Locator;
   readonly sortDropdown: Locator;
   readonly productItems: Locator;
@@ -45,15 +44,20 @@ export class InventoryPage extends BasePage {
 
   async addProductToCartByName(productName: string): Promise<void> {
     const item = this.productItems.filter({ hasText: productName });
-    await item.getByRole('button', { name: /add to cart/i }).click();
+    const addButton = item.getByRole('button', { name: /add to cart/i });
+    await addButton.click();
+    // Wait until state flips to 'Remove' to prevent race conditions
+    await item.getByRole('button', { name: /remove/i }).waitFor({ state: 'visible' });
   }
 
   async getCartCount(): Promise<number> {
+    await this.cartBadge.waitFor({ state: 'visible' });
     const text = await this.cartBadge.innerText();
     return parseInt(text, 10);
   }
 
   async goToCart(): Promise<void> {
     await this.cartIcon.click();
+    await this.page.waitForURL(/cart/);
   }
 }

@@ -23,6 +23,7 @@ export class CartPage extends BasePage {
   }
 
   async getCartItemCount(): Promise<number> {
+    await this.cartItems.first().waitFor({ state: 'visible', timeout: 5000 }).catch(() => {});
     return this.cartItems.count();
   }
 
@@ -33,5 +34,6 @@ export class CartPage extends BasePage {
 
   async proceedToCheckout(): Promise<void> {
     await this.checkoutButton.click();
+    await this.page.waitForURL(/checkout-step-one/);
   }
 }

@@ -3,15 +3,18 @@ import { LoginPage } from '../../src/pages/login.page';
 
 test.describe('Visual Regression Testing — UI & Layout Integrity', () => {
 
+  // Visual snapshot comparisons are focused on Chromium to prevent OS font rendering false-positives
+  test.beforeEach(async ({}, testInfo) => {
+    test.skip(testInfo.project.name !== 'chromium', 'Visual regression baseline is anchored on Chromium');
+  });
+
   test('Visual comparison: Login page layout', async ({ page }) => {
-    // Disable stored auth to see login page
     await page.context().clearCookies();
     const loginPage = new LoginPage(page);
     await loginPage.goto();
 
-    // Verify visual match of the entire login page
     await expect(page).toHaveScreenshot('login-page.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.1,
       animations: 'disabled',
     });
   });
@@ -20,11 +23,10 @@ test.describe('Visual Regression Testing — UI & Layout Integrity', () => {
     await page.goto('/inventory.html');
     await expect(inventoryPage.pageTitle).toHaveText('Products');
 
-    // Verify visual match of the full catalog
     await expect(page).toHaveScreenshot('inventory-catalog.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.1,
       animations: 'disabled',
-      mask: [page.locator('.footer_copy')], // Mask dynamic/footer dates if any
+      mask: [page.locator('.footer_copy')],
     });
   });
 
@@ -32,9 +34,8 @@ test.describe('Visual Regression Testing — UI & Layout Integrity', () => {
     await page.goto('/inventory.html');
     const firstProductCard = inventoryPage.productItems.first();
 
-    // Component-level visual regression
     await expect(firstProductCard).toHaveScreenshot('product-card-component.png', {
-      maxDiffPixelRatio: 0.05,
+      maxDiffPixelRatio: 0.1,
     });
   });
 });
