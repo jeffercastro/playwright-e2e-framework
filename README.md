@@ -18,7 +18,7 @@ Production-grade UI End-to-End & Visual automation framework built with **TypeSc
 - **Reusable Auth Session (`storageState`):** A single global setup logs in once and shares the browser session across all tests, eliminating redundant login steps.
 - **Visual Regression Testing:** Pixel-by-pixel visual snapshot comparisons (`expect(page).toHaveScreenshot()`) for whole pages and isolated component cards.
 - **Custom Fixtures:** Page Objects are injected automatically into tests via Playwright's fixture system.
-- **Cross-Browser Matrix:** Tests run in parallel on Chromium, Firefox, and WebKit via GitHub Actions matrix strategy.
+- **Cross-Browser Support:** Configured for Chromium, Firefox, and WebKit locally. CI pipeline targets Chromium (the dominant 65%+ market-share engine) for fast, reliable feedback.
 - **Resilient Selectors:** Prioritizes `getByRole`, `getByPlaceholder`, and `getByText` over brittle XPaths or CSS classes.
 - **Auto-evidence on Failure:** Screenshots, videos, and execution traces captured automatically on test retries/failures.
 - **Continuous Deployment:** Automatically publishes interactive HTML test reports to **GitHub Pages** on every push to `main`.

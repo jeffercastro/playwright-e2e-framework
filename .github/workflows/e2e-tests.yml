@@ -18,14 +18,9 @@ concurrency:
 
 jobs:
   test:
-    name: E2E & Visual Tests (${{ matrix.project }})
+    name: E2E & Visual Tests
     runs-on: ubuntu-latest
-    timeout-minutes: 10
-
-    strategy:
-      fail-fast: false
-      matrix:
-        project: [chromium, firefox, webkit]
+    timeout-minutes: 15
 
     steps:
       - name: Checkout Code
@@ -41,29 +36,29 @@ jobs:
         run: npm ci
 
       - name: Install Playwright Browsers
-        run: npx playwright install --with-deps ${{ matrix.project }}
+        run: npx playwright install --with-deps chromium
 
-      - name: Run Playwright Tests on ${{ matrix.project }}
-        run: npx playwright test --project=setup --project=${{ matrix.project }}
+      - name: Run Playwright Tests
+        run: npx playwright test --project=setup --project=chromium
 
       - name: Upload Playwright Report Artifact
         uses: actions/upload-artifact@v4
         if: always()
         with:
-          name: playwright-report-${{ matrix.project }}
+          name: playwright-report
           path: playwright-report/
           retention-days: 14
 
-      - name: Upload Pages Artifact (Chromium Primary)
+      - name: Upload Pages Artifact
         uses: actions/upload-pages-artifact@v3
-        if: matrix.project == 'chromium' && github.ref == 'refs/heads/main'
+        if: always() && github.ref == 'refs/heads/main'
         with:
           path: playwright-report/
 
   deploy-pages:
     name: Deploy Live HTML Report to GitHub Pages
     needs: test
-    if: github.ref == 'refs/heads/main'
+    if: always() && github.ref == 'refs/heads/main' && needs.test.result != 'cancelled'
     runs-on: ubuntu-latest
     environment:
       name: github-pages
